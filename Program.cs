@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -9,6 +10,20 @@ namespace EXAM_CSHARP
 {
     internal class Program
     {
+        public static class ProgressViewer
+        {
+            public static int NbPlanetsDeserialized { get; set; }
+            public static int NbSystemsDeserialized { get; set; }
+
+            public static void showProgressPlanets()
+            {
+                Console.WriteLine(NbPlanetsDeserialized);
+            }
+            public static void showProgressSystems()
+            {
+                Console.WriteLine(NbSystemsDeserialized);
+            }
+        }
         public class Planet
         {
             public int Size { get; set; }
@@ -105,15 +120,16 @@ namespace EXAM_CSHARP
             string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
             foreach (string dir in dirs)
             {
-                await Task.Run(() =>
+                tasks.Add(Task.Run(() =>
                 {
                     //Initialize a new System
                     System system = new System() { Name = dir, Planets = new List<Planet>() };
-                
+
                     //Get list of all files within each Universe subfolders (systems)
                     string[] allfiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
-                
-                    foreach (var file in allfiles){
+
+                    foreach (var file in allfiles)
+                    {
                         //Check if file exists
                         if (File.Exists(file))
                         {
@@ -122,11 +138,13 @@ namespace EXAM_CSHARP
                             system.Planets.Add(planet);
                         }
                     }
+
                     // Add this system to the Universe
                     universe.Systems.Add(system);
-                });
-
+                }));
             }
+            
+            await Task.WhenAll(tasks);
             
             //Stop the stopwatch
             stopWatch.Stop();
