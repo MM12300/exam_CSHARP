@@ -9,6 +9,7 @@ namespace EXAM_CSHARP
 {
     internal class Program
     {
+        private static readonly Object universeLock = new Object();
         
         public class ProgressViewer
         {
@@ -185,9 +186,11 @@ namespace EXAM_CSHARP
                             Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                             system.Planets.Add(planet);
                             // Triggering planet events
-                            progressViewer.PlanetEvent(progressViewer);
-                            Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
-                            
+                            lock (universe)
+                            {
+                                progressViewer.PlanetEvent(progressViewer);
+                                Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
+                            }
                             //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                         }
                     }
