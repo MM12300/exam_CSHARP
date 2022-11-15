@@ -28,6 +28,7 @@ namespace EXAM_CSHARP
                 }  
             }
 
+            // EVENT VERSION 1 : the "strange" version
             public void PlanetEvent(ProgressViewer progressViewer)
             {
                 progressViewer.Planet += my_PlanetEvent;  
@@ -37,6 +38,11 @@ namespace EXAM_CSHARP
             { }
 
         }
+        
+        // EVENT VERSION 1 : the "strange" version
+        public static void my_PlanetEventGood(object sender, EventArgs e)  
+        { }
+        
         public class Planet
         {
             public int Size { get; set; }
@@ -77,7 +83,7 @@ namespace EXAM_CSHARP
 
             return count.ToString();
         }
-        
+
         public static async Task Main()
         {
             // EXERCICE 1 + 3 : planet count + synchronous deserialization
@@ -126,8 +132,15 @@ namespace EXAM_CSHARP
                         string planetFile = File.ReadAllText(file);
                         Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                         
-                        // Triggering planet events
-                        progressViewer.PlanetEvent(progressViewer);
+                        // Triggering planet events :
+                        // !!!!!!!!!!!! WARNING !!!!!!!!!!!!!!
+                        // TWO VERSION OF EVENTS
+                        // VERSION 1 : the strange version
+                        //progressViewer.PlanetEvent(progressViewer);
+                        // VERSION 2 : the simple version
+                        progressViewer.Planet += my_PlanetEventGood;
+                        
+                        //PROGRESS BAR CONSOLE WRITING
                         Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
 
                         system.Planets.Add(planet);
@@ -192,7 +205,15 @@ namespace EXAM_CSHARP
                             // Triggering planet events
                             lock (universeLock)
                             {
-                                progressViewer.PlanetEvent(progressViewer);
+                                // Triggering planet events :
+                                // !!!!!!!!!!!! WARNING !!!!!!!!!!!!!!
+                                // TWO VERSION OF EVENTS
+                                // VERSION 1 : the strange version
+                                //progressViewer.PlanetEvent(progressViewer);
+                                // VERSION 2 : the simple version
+                                progressViewer.Planet += my_PlanetEventGood;
+                        
+                                //PROGRESS BAR CONSOLE WRITING
                                 Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
                             }
                             //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
