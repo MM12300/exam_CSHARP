@@ -78,13 +78,12 @@ namespace EXAM_CSHARP
         // Main for EXERCICE 2
         public static async Task Main()
         {
-            Console.WriteLine("Serialize synchronous timing : ");
-            UniverseDeserialize();
-            // Console.WriteLine("Serialize asynchronous timing : ");
-            // await UniverseDeserializeAsync();
-            
-            //ProgressViewer progressViewer = new ProgressViewer();  
-            //progressViewer.TestEvent();  
+            // EXERCICE 1 + 3
+            //Console.WriteLine("Serialize synchronous timing : ");
+            //UniverseDeserialize();
+            // EXERCICE 2 + 3 
+            Console.WriteLine("Serialize asynchronous timing : ");
+            await UniverseDeserializeAsync();
             Console.ReadKey();  
         }
 
@@ -123,7 +122,7 @@ namespace EXAM_CSHARP
                         string planetFile = File.ReadAllText(file);
                         Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                         
-                        // Triggering events
+                        // Triggering planet events
                         progressViewer.PlanetEvent(progressViewer);
                         Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
 
@@ -149,6 +148,10 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            string planetCountString = planetCount();
+            ProgressViewer progressViewer = new ProgressViewer()
+                { NbPlanetsDeserialized = 0, NbSystemsDeserialized = 0 };
+            
             //New task list
             List<Task> tasks = new List<Task>();
             
@@ -181,6 +184,10 @@ namespace EXAM_CSHARP
                             string planetFile = File.ReadAllText(file);
                             Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                             system.Planets.Add(planet);
+                            // Triggering planet events
+                            progressViewer.PlanetEvent(progressViewer);
+                            Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
+                            
                             //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                         }
                     }
