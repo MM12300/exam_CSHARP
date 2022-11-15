@@ -29,10 +29,10 @@ namespace EXAM_CSHARP
         }
         
         //Main for EXERCICE 1
-        // public static void Main(string[] args)
-        // {
-        //     UniverseDeserialize();
-        // }
+        public static void Main(string[] args)
+        {
+            UniverseDeserialize();
+        }
 
         // EXERCICE 1 
         public static void UniverseDeserialize()
@@ -82,15 +82,16 @@ namespace EXAM_CSHARP
         }
 
         // Main for EXERCICE 2
-        public static async Task Main()
-        {
-            await UniverseDeserializeAsync();
-        
-        }
+        // public static async Task Main()
+        // {
+        //     await UniverseDeserializeAsync();
+        // }
 
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            List<Task> tasks = new List<Task>();
+            
             // Mesuring time for method execution with stopwatch (start)
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -104,26 +105,27 @@ namespace EXAM_CSHARP
             string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
             foreach (string dir in dirs)
             {
-                //Initialize a new System
-                System system = new System() { Name = dir, Planets = new List<Planet>() };
+                await Task.Run(() =>
+                {
+                    //Initialize a new System
+                    System system = new System() { Name = dir, Planets = new List<Planet>() };
                 
-                //Get list of all files within each Universe subfolders (systems)
-                string[] allfiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+                    //Get list of all files within each Universe subfolders (systems)
+                    string[] allfiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
                 
-                foreach (var file in allfiles){
-                    //Check if file exists
-                    if (File.Exists(file))
-                    {
-                        string planetFile = File.ReadAllText(file);
-                        Planet planet = await Task.Run(() =>
+                    foreach (var file in allfiles){
+                        //Check if file exists
+                        if (File.Exists(file))
                         {
-                            return JsonConvert.DeserializeObject<Planet>(planetFile);
-                        });
-                        system.Planets.Add(planet);
+                            string planetFile = File.ReadAllText(file);
+                            Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
+                            system.Planets.Add(planet);
+                        }
                     }
-                }
-                // Add this system to the Universe
-                universe.Systems.Add(system);
+                    // Add this system to the Universe
+                    universe.Systems.Add(system);
+                });
+
             }
             
             //Stop the stopwatch
