@@ -13,6 +13,9 @@ namespace EXAM_CSHARP
         // readonly variable used for lock() 
         private static readonly Object universeLock = new Object();
         
+        // Universe folder relative path
+        private static string _dirPath = @"..\..\Universe";
+        
         public class ProgressViewer
         {
             public int NbPlanetsDeserialized { get; set; }
@@ -68,9 +71,8 @@ namespace EXAM_CSHARP
         {
             int count = 0;
             // Universe folder relative path
-            string dirPath = @"..\..\Universe";
             //Get list of all directories within Universe folder
-            string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
+            string[] dirs = Directory.GetDirectories(_dirPath, "*", SearchOption.TopDirectoryOnly);
             //For all directories
             foreach (string dir in dirs)
             {
@@ -97,6 +99,7 @@ namespace EXAM_CSHARP
         // EXERCICE 1 
         public static void UniverseDeserialize()
         {
+            Console.WriteLine("Universe Deserialize SYNCHRONOUS ===>");
             // Planet Count
             string planetCountString = planetCount();
             // Progress Viewer
@@ -106,14 +109,11 @@ namespace EXAM_CSHARP
             // Mesuring time for method execution with stopwatch (start)
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            
-            // Universe folder relative path
-            string dirPath = @"..\..\Universe";
 
             Universe universe = new Universe() { Systems = new List<System>() };
             
             //Get list of all directories within Universe folder
-            string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
+            string[] dirs = Directory.GetDirectories(_dirPath, "*", SearchOption.TopDirectoryOnly);
             foreach (string dir in dirs)
             {
                 //Initialize a new System
@@ -163,6 +163,7 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            Console.WriteLine("Universe Deserialize ASYNCHRONOUS ===>");
             // Planet Count
             string planetCountString = planetCount();
             ProgressViewer progressViewer = new ProgressViewer()
@@ -175,13 +176,10 @@ namespace EXAM_CSHARP
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
             
-            // Universe folder relative path
-            string dirPath = @"..\..\Universe";
-
             Universe universe = new Universe() { Systems = new List<System>() };
             
             //Get list of all directories within Universe folder
-            string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
+            string[] dirs = Directory.GetDirectories(_dirPath, "*", SearchOption.TopDirectoryOnly);
             foreach (string dir in dirs)
             {
                 tasks.Add(Task.Run(() =>
