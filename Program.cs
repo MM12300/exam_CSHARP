@@ -19,6 +19,7 @@ namespace EXAM_CSHARP
             {  
                 add  
                 {  
+                    NbPlanetsDeserialized++;
                     Console.WriteLine(NbPlanetsDeserialized);
                 }  
                 remove  
@@ -27,15 +28,14 @@ namespace EXAM_CSHARP
                 }  
             }
 
-            public void PlanetEvent()  
-            {  
-                ProgressViewer progressViewer = new ProgressViewer();  
-                progressViewer.Planet += myTest_PlanetEvent;  
+            public void PlanetEvent(ProgressViewer progressViewer)
+            {
+                //ProgressViewer progressViewer = new ProgressViewer();
+                progressViewer.Planet += my_PlanetEvent;  
             }  
             
-            public void myTest_PlanetEvent(object sender, EventArgs e)  
-            {  
-            }  
+            public void my_PlanetEvent(object sender, EventArgs e)  
+            { }  
         }
         public class Planet
         {
@@ -104,7 +104,7 @@ namespace EXAM_CSHARP
                         Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                         
                         // Triggering events
-                        progressViewer.PlanetEvent();
+                        progressViewer.PlanetEvent(progressViewer);
                         system.Planets.Add(planet);
                         
                         //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
