@@ -36,6 +36,8 @@ namespace EXAM_CSHARP
         {
             // Universe folder relative path
             string dirPath = @"..\..\Universe";
+
+            Universe universe = new Universe() { Systems = new List<System>() };
             
             //Get list of all directories within Universe folder
             string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
@@ -58,6 +60,8 @@ namespace EXAM_CSHARP
                         system.Planets.Add(planet);
                     }
                 }
+                // Add this system to the Universe
+                universe.Systems.Add(system);
             }
         }
     }
