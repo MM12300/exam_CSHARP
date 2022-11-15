@@ -44,9 +44,17 @@ namespace EXAM_CSHARP
         }
         
         //Main for EXERCICE 1
-        public static void Main(string[] args)
+        // public static void Main(string[] args)
+        // {
+        //     UniverseDeserialize();
+        //     Task.Run(async () => await UniverseDeserializeAsync());
+        // }
+        
+        // Main for EXERCICE 2
+        public static async Task Main()
         {
             UniverseDeserialize();
+            await UniverseDeserializeAsync();
         }
 
         // EXERCICE 1 
@@ -95,12 +103,6 @@ namespace EXAM_CSHARP
                 ts.Milliseconds / 10);
             Console.WriteLine("RunTime " + elapsedTime);
         }
-
-        // Main for EXERCICE 2
-        // public static async Task Main()
-        // {
-        //     await UniverseDeserializeAsync();
-        // }
 
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
