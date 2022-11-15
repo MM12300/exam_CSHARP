@@ -43,7 +43,7 @@ namespace EXAM_CSHARP
 
         }
         
-        // EVENT VERSION 2 : the "strange" version
+        // EVENT VERSION 2 : the "good" version
         public static void my_PlanetEventGood(object sender, EventArgs e)  
         { }
         
