@@ -53,7 +53,9 @@ namespace EXAM_CSHARP
         // Main for EXERCICE 2
         public static async Task Main()
         {
+            Console.WriteLine("Serialize synchronous timing : ");
             UniverseDeserialize();
+            Console.WriteLine("Serialize asynchronous timing : ");
             await UniverseDeserializeAsync();
         }
 
