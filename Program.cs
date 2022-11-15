@@ -14,20 +14,6 @@ namespace EXAM_CSHARP
         {
             public int NbPlanetsDeserialized { get; set; }
             public int NbSystemsDeserialized { get; set; }
-
-            public event EventHandler MyEvent
-            {  
-                add  
-                {  
-                    Console.WriteLine("add operation");  
-                    Console.WriteLine(NbPlanetsDeserialized);
-                }  
-                remove  
-                {  
-                    Console.WriteLine("remove operation");  
-                    Console.WriteLine(NbSystemsDeserialized);
-                }  
-            }
             
             public event EventHandler Planet
             {  
@@ -40,23 +26,13 @@ namespace EXAM_CSHARP
                     Console.WriteLine(NbSystemsDeserialized);
                 }  
             }
-            
-            public void TestEvent()  
-            {  
-                ProgressViewer progressViewer = new ProgressViewer();  
-                progressViewer.MyEvent += myTest_MyEvent;  
-                progressViewer.MyEvent -= myTest_MyEvent;  
-            }  
-            
+
             public void PlanetEvent()  
             {  
                 ProgressViewer progressViewer = new ProgressViewer();  
                 progressViewer.Planet += myTest_PlanetEvent;  
             }  
             
-            public void myTest_MyEvent(object sender, EventArgs e)  
-            {  
-            }  
             public void myTest_PlanetEvent(object sender, EventArgs e)  
             {  
             }  
