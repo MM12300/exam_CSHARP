@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Xml;
 using Newtonsoft.Json;
 
 namespace EXAM_CSHARP
@@ -139,8 +140,7 @@ namespace EXAM_CSHARP
                         progressViewer.Planet += my_PlanetEventGood;
                         
                         //PROGRESS BAR CONSOLE WRITING
-                        Console.Write("\r {0}" +  "/" + planetCountString + "planets - ", progressViewer.NbPlanetsDeserialized);
-
+                        Console.Write("\r {0}" +  "/" + planetCountString + " planets", progressViewer.NbPlanetsDeserialized);
                         system.Planets.Add(planet);
                         
                         //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
@@ -157,7 +157,7 @@ namespace EXAM_CSHARP
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
-            Console.WriteLine("Serialize synchronous timing : " + elapsedTime);
+            Console.WriteLine("\n Serialize synchronous timing : " + elapsedTime);
         }
 
         // EXERCICE 2
@@ -212,7 +212,7 @@ namespace EXAM_CSHARP
                                 progressViewer.Planet += my_PlanetEventGood;
                         
                                 //PROGRESS BAR CONSOLE WRITING
-                                Console.Write("\r {0}" +  "/" + planetCountString + "planets - ", progressViewer.NbPlanetsDeserialized);
+                                Console.Write("\r {0}" +  "/" + planetCountString + " planets", progressViewer.NbPlanetsDeserialized);
                             }
                             //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                         }
@@ -236,7 +236,7 @@ namespace EXAM_CSHARP
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
-            Console.WriteLine("Serialize asynchronous timing : " + elapsedTime);
+            Console.WriteLine("\n Serialize asynchronous timing : " + elapsedTime);
         }
     }
 }
