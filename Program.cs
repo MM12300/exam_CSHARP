@@ -12,8 +12,8 @@ namespace EXAM_CSHARP
         
         public class ProgressViewer
         {
-            public static int NbPlanetsDeserialized { get; set; }
-            public static int NbSystemsDeserialized { get; set; }
+            public int NbPlanetsDeserialized { get; set; }
+            public int NbSystemsDeserialized { get; set; }
 
             public event EventHandler MyEvent
             {  
@@ -83,8 +83,8 @@ namespace EXAM_CSHARP
         // Main for EXERCICE 2
         public static async Task Main()
         {
-            // Console.WriteLine("Serialize synchronous timing : ");
-            // UniverseDeserialize();
+            Console.WriteLine("Serialize synchronous timing : ");
+            UniverseDeserialize();
             // Console.WriteLine("Serialize asynchronous timing : ");
             // await UniverseDeserializeAsync();
             
@@ -96,9 +96,9 @@ namespace EXAM_CSHARP
         // EXERCICE 1 
         public static void UniverseDeserialize()
         {
-            ProgressViewer progressViewer = new ProgressViewer();  
-            progressViewer.PlanetEvent();  
-            
+            ProgressViewer progressViewer = new ProgressViewer()
+                { NbPlanetsDeserialized = 0, NbSystemsDeserialized = 0 };
+
             // Mesuring time for method execution with stopwatch (start)
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -126,7 +126,11 @@ namespace EXAM_CSHARP
                     {
                         string planetFile = File.ReadAllText(file);
                         Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
+                        
+                        // Triggering events
+                        progressViewer.PlanetEvent();
                         system.Planets.Add(planet);
+                        
                         //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                     }
                 }
@@ -147,9 +151,6 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
-            ProgressViewer progressViewer = new ProgressViewer();  
-            progressViewer.TestEvent();
-            
             //New task list
             List<Task> tasks = new List<Task>();
             
