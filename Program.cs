@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -10,19 +9,58 @@ namespace EXAM_CSHARP
 {
     internal class Program
     {
-        public static class ProgressViewer
+        
+        public class MyTest  
+        {  
+            public event EventHandler MyEvent  
+            {  
+                add  
+                {  
+                    Console.WriteLine("add operation");  
+                }  
+                remove  
+                {  
+                    Console.WriteLine("remove operation");  
+                }  
+            }  
+        }  
+
+        public class ProgressViewer
         {
             public static int NbPlanetsDeserialized { get; set; }
             public static int NbSystemsDeserialized { get; set; }
 
-            public static void showProgressPlanets()
-            {
-                Console.WriteLine(NbPlanetsDeserialized);
-            }
-            public static void showProgressSystems()
-            {
-                Console.WriteLine(NbSystemsDeserialized);
-            }
+            public event EventHandler MyEvent
+            {  
+                add  
+                {  
+                    Console.WriteLine("add operation");  
+                    Console.WriteLine(NbPlanetsDeserialized);
+                }  
+                remove  
+                {  
+                    Console.WriteLine("remove operation");  
+                    Console.WriteLine(NbSystemsDeserialized);
+                }  
+            }  
+            // public static void showProgressPlanets()
+            // {
+            //     Console.WriteLine(NbPlanetsDeserialized);
+            // }
+            // public static void showProgressSystems()
+            // {
+            //     Console.WriteLine(NbSystemsDeserialized);
+            // }
+            
+            public void TestEvent()  
+            {  
+                ProgressViewer progressViewer = new ProgressViewer();  
+                progressViewer.MyEvent += myTest_MyEvent;  
+                progressViewer.MyEvent -= myTest_MyEvent;  
+            }  
+            public void myTest_MyEvent(object sender, EventArgs e)  
+            {  
+            }  
         }
         public class Planet
         {
@@ -42,21 +80,18 @@ namespace EXAM_CSHARP
         {
             public List<System> Systems { get; set; }
         }
-        
-        //Main for EXERCICE 1
-        // public static void Main(string[] args)
-        // {
-        //     UniverseDeserialize();
-        //     Task.Run(async () => await UniverseDeserializeAsync());
-        // }
-        
+
         // Main for EXERCICE 2
         public static async Task Main()
         {
-            Console.WriteLine("Serialize synchronous timing : ");
-            UniverseDeserialize();
-            Console.WriteLine("Serialize asynchronous timing : ");
-            await UniverseDeserializeAsync();
+            // Console.WriteLine("Serialize synchronous timing : ");
+            // UniverseDeserialize();
+            // Console.WriteLine("Serialize asynchronous timing : ");
+            // await UniverseDeserializeAsync();
+            
+            //ProgressViewer progressViewer = new ProgressViewer();  
+            progressViewer.TestEvent();  
+            Console.ReadKey();  
         }
 
         // EXERCICE 1 
@@ -110,6 +145,7 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            //New task list
             List<Task> tasks = new List<Task>();
             
             // Mesuring time for method execution with stopwatch (start)
