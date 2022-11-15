@@ -87,10 +87,8 @@ namespace EXAM_CSHARP
         public static async Task Main()
         {
             // EXERCICE 1 + 3 : planet count + synchronous deserialization
-            Console.WriteLine("Serialize synchronous timing : ");
             UniverseDeserialize();
             // EXERCICE 2 + 3 : planet count + asynchronous deserialization
-            Console.WriteLine("Serialize asynchronous timing : ");
             await UniverseDeserializeAsync();
             Console.ReadKey();  
         }
@@ -141,7 +139,7 @@ namespace EXAM_CSHARP
                         progressViewer.Planet += my_PlanetEventGood;
                         
                         //PROGRESS BAR CONSOLE WRITING
-                        Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
+                        Console.Write("\r {0}" +  "/" + planetCountString + "planets - ", progressViewer.NbPlanetsDeserialized);
 
                         system.Planets.Add(planet);
                         
@@ -159,7 +157,7 @@ namespace EXAM_CSHARP
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
-            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("Serialize synchronous timing : " + elapsedTime);
         }
 
         // EXERCICE 2
@@ -214,7 +212,7 @@ namespace EXAM_CSHARP
                                 progressViewer.Planet += my_PlanetEventGood;
                         
                                 //PROGRESS BAR CONSOLE WRITING
-                                Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
+                                Console.Write("\r {0}" +  "/" + planetCountString + "planets - ", progressViewer.NbPlanetsDeserialized);
                             }
                             //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                         }
@@ -223,6 +221,7 @@ namespace EXAM_CSHARP
                     // Add this system to the Universe
                     universe.Systems.Add(system);
                 }));
+                
             }
             
             // Await for all tasks completion
@@ -237,7 +236,7 @@ namespace EXAM_CSHARP
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
                 ts.Hours, ts.Minutes, ts.Seconds,
                 ts.Milliseconds / 10);
-            Console.WriteLine("RunTime " + elapsedTime);
+            Console.WriteLine("Serialize asynchronous timing : " + elapsedTime);
         }
     }
 }
