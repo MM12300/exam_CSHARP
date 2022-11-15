@@ -9,17 +9,18 @@ namespace EXAM_CSHARP
 {
     internal class Program
     {
+        // readonly variable used for lock() 
         private static readonly Object universeLock = new Object();
         
         public class ProgressViewer
         {
             public int NbPlanetsDeserialized { get; set; }
-            public int NbSystemsDeserialized { get; set; }
 
             public event EventHandler Planet
             {  
                 add  
                 {  
+                    //Increment the number of planets on event add
                     NbPlanetsDeserialized++;
                 }  
                 remove  
@@ -29,7 +30,6 @@ namespace EXAM_CSHARP
 
             public void PlanetEvent(ProgressViewer progressViewer)
             {
-                //ProgressViewer progressViewer = new ProgressViewer();
                 progressViewer.Planet += my_PlanetEvent;  
             }  
             
@@ -56,17 +56,19 @@ namespace EXAM_CSHARP
             public List<System> Systems { get; set; }
         }
         
+        // Counts the number of planets 
         public static string planetCount()
         {
             int count = 0;
             // Universe folder relative path
             string dirPath = @"..\..\Universe";
-
             //Get list of all directories within Universe folder
             string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
+            //For all directories
             foreach (string dir in dirs)
             {
                 string[] allfiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+                //For all files
                 foreach (var file in allfiles)
                 {
                     count++;
@@ -75,14 +77,13 @@ namespace EXAM_CSHARP
 
             return count.ToString();
         }
-
-        // Main for EXERCICE 2
+        
         public static async Task Main()
         {
-            // EXERCICE 1 + 3
-            //Console.WriteLine("Serialize synchronous timing : ");
-            //UniverseDeserialize();
-            // EXERCICE 2 + 3 
+            // EXERCICE 1 + 3 : planet count + synchronous deserialization
+            Console.WriteLine("Serialize synchronous timing : ");
+            UniverseDeserialize();
+            // EXERCICE 2 + 3 : planet count + asynchronous deserialization
             Console.WriteLine("Serialize asynchronous timing : ");
             await UniverseDeserializeAsync();
             Console.ReadKey();  
@@ -91,9 +92,11 @@ namespace EXAM_CSHARP
         // EXERCICE 1 
         public static void UniverseDeserialize()
         {
+            // Planet Count
             string planetCountString = planetCount();
+            // Progress Viewer
             ProgressViewer progressViewer = new ProgressViewer()
-                { NbPlanetsDeserialized = 0, NbSystemsDeserialized = 0 };
+                { NbPlanetsDeserialized = 0 };
 
             // Mesuring time for method execution with stopwatch (start)
             Stopwatch stopWatch = new Stopwatch();
@@ -149,9 +152,10 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            // Planet Count
             string planetCountString = planetCount();
             ProgressViewer progressViewer = new ProgressViewer()
-                { NbPlanetsDeserialized = 0, NbSystemsDeserialized = 0 };
+                { NbPlanetsDeserialized = 0 };
             
             //New task list
             List<Task> tasks = new List<Task>();
@@ -186,7 +190,7 @@ namespace EXAM_CSHARP
                             Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                             system.Planets.Add(planet);
                             // Triggering planet events
-                            lock (universe)
+                            lock (universeLock)
                             {
                                 progressViewer.PlanetEvent(progressViewer);
                                 Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
@@ -200,6 +204,7 @@ namespace EXAM_CSHARP
                 }));
             }
             
+            // Await for all tasks completion
             await Task.WhenAll(tasks);
             
             //Stop the stopwatch
