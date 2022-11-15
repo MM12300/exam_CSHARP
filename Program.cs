@@ -14,17 +14,15 @@ namespace EXAM_CSHARP
         {
             public int NbPlanetsDeserialized { get; set; }
             public int NbSystemsDeserialized { get; set; }
-            
+
             public event EventHandler Planet
             {  
                 add  
                 {  
                     NbPlanetsDeserialized++;
-                    Console.WriteLine(NbPlanetsDeserialized);
                 }  
                 remove  
                 {  
-                    Console.WriteLine(NbSystemsDeserialized);
                 }  
             }
 
@@ -35,7 +33,8 @@ namespace EXAM_CSHARP
             }  
             
             public void my_PlanetEvent(object sender, EventArgs e)  
-            { }  
+            { }
+
         }
         public class Planet
         {
@@ -55,6 +54,26 @@ namespace EXAM_CSHARP
         {
             public List<System> Systems { get; set; }
         }
+        
+        public static string planetCount()
+        {
+            int count = 0;
+            // Universe folder relative path
+            string dirPath = @"..\..\Universe";
+
+            //Get list of all directories within Universe folder
+            string[] dirs = Directory.GetDirectories(dirPath, "*", SearchOption.TopDirectoryOnly);
+            foreach (string dir in dirs)
+            {
+                string[] allfiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+                foreach (var file in allfiles)
+                {
+                    count++;
+                }
+            }
+
+            return count.ToString();
+        }
 
         // Main for EXERCICE 2
         public static async Task Main()
@@ -72,6 +91,7 @@ namespace EXAM_CSHARP
         // EXERCICE 1 
         public static void UniverseDeserialize()
         {
+            string planetCountString = planetCount();
             ProgressViewer progressViewer = new ProgressViewer()
                 { NbPlanetsDeserialized = 0, NbSystemsDeserialized = 0 };
 
@@ -105,6 +125,8 @@ namespace EXAM_CSHARP
                         
                         // Triggering events
                         progressViewer.PlanetEvent(progressViewer);
+                        Console.WriteLine(progressViewer.NbPlanetsDeserialized + "/" + planetCountString);
+
                         system.Planets.Add(planet);
                         
                         //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
