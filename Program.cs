@@ -10,21 +10,6 @@ namespace EXAM_CSHARP
     internal class Program
     {
         
-        public class MyTest  
-        {  
-            public event EventHandler MyEvent  
-            {  
-                add  
-                {  
-                    Console.WriteLine("add operation");  
-                }  
-                remove  
-                {  
-                    Console.WriteLine("remove operation");  
-                }  
-            }  
-        }  
-
         public class ProgressViewer
         {
             public static int NbPlanetsDeserialized { get; set; }
@@ -42,15 +27,19 @@ namespace EXAM_CSHARP
                     Console.WriteLine("remove operation");  
                     Console.WriteLine(NbSystemsDeserialized);
                 }  
-            }  
-            // public static void showProgressPlanets()
-            // {
-            //     Console.WriteLine(NbPlanetsDeserialized);
-            // }
-            // public static void showProgressSystems()
-            // {
-            //     Console.WriteLine(NbSystemsDeserialized);
-            // }
+            }
+            
+            public event EventHandler Planet
+            {  
+                add  
+                {  
+                    Console.WriteLine(NbPlanetsDeserialized);
+                }  
+                remove  
+                {  
+                    Console.WriteLine(NbSystemsDeserialized);
+                }  
+            }
             
             public void TestEvent()  
             {  
@@ -58,7 +47,17 @@ namespace EXAM_CSHARP
                 progressViewer.MyEvent += myTest_MyEvent;  
                 progressViewer.MyEvent -= myTest_MyEvent;  
             }  
+            
+            public void PlanetEvent()  
+            {  
+                ProgressViewer progressViewer = new ProgressViewer();  
+                progressViewer.Planet += myTest_PlanetEvent;  
+            }  
+            
             public void myTest_MyEvent(object sender, EventArgs e)  
+            {  
+            }  
+            public void myTest_PlanetEvent(object sender, EventArgs e)  
             {  
             }  
         }
@@ -90,13 +89,16 @@ namespace EXAM_CSHARP
             // await UniverseDeserializeAsync();
             
             //ProgressViewer progressViewer = new ProgressViewer();  
-            progressViewer.TestEvent();  
+            //progressViewer.TestEvent();  
             Console.ReadKey();  
         }
 
         // EXERCICE 1 
         public static void UniverseDeserialize()
         {
+            ProgressViewer progressViewer = new ProgressViewer();  
+            progressViewer.PlanetEvent();  
+            
             // Mesuring time for method execution with stopwatch (start)
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -145,6 +147,9 @@ namespace EXAM_CSHARP
         // EXERCICE 2
         public static async Task UniverseDeserializeAsync()
         {
+            ProgressViewer progressViewer = new ProgressViewer();  
+            progressViewer.TestEvent();
+            
             //New task list
             List<Task> tasks = new List<Task>();
             
