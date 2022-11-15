@@ -90,6 +90,7 @@ namespace EXAM_CSHARP
                         string planetFile = File.ReadAllText(file);
                         Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                         system.Planets.Add(planet);
+                        //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                     }
                 }
                 // Add this system to the Universe
@@ -140,6 +141,7 @@ namespace EXAM_CSHARP
                             string planetFile = File.ReadAllText(file);
                             Planet planet = JsonConvert.DeserializeObject<Planet>(planetFile);
                             system.Planets.Add(planet);
+                            //Console.WriteLine("Planet name : {0}, size : {1}, usability : {2}, orbit : {3}", planet.Name, planet.Size.ToString(), planet.Usability.ToString(), planet.Orbit.ToString());
                         }
                     }
 
